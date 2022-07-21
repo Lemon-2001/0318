@@ -1,0 +1,46 @@
+//-------------------------從這裡開始是 璇   的OOOOOOOOOOOOO-----------------------------------
+
+        public E1OutputUserDTO E1EditList(string userId, string username, int countryID, string UserAbout)
+        {
+            var updata = Repository.FindBy<UserModel>(x => x.Id == userId).First();
+            E1OutputUserDTO result = new E1OutputUserDTO();
+            try
+            {
+                updata.UserName = username;
+                //缺密碼
+                updata.UserCountryId = countryID;
+                updata.UserAbout = UserAbout;
+
+                Update<UserModel>(updata);
+                result.message = "您的隱私設定已更改成功";
+            }
+            catch
+            {
+                result.message = "您的設定更改失敗";
+            }
+
+            return result;
+        }
+
+        public OutputUserDTO PrivacyList(string userId, int personId, int friendId, int gameId)
+        { 
+            var updata = Repository.FindBy<UserModel>(x => x.Id == userId).First();
+            OutputUserDTO result = new OutputUserDTO();
+            try
+            {
+                updata.PrivacyPersonalFile = personId;
+                updata.PrivacyGameFile = gameId;
+                updata.PrivacyFriendsList = friendId;
+
+                Update<UserModel>(updata);
+                result.message = "您的隱私設定已更改成功";
+            }
+            catch
+            { 
+                result.message = "您的設定更改失敗";
+            }
+
+
+
+            return result;
+        }

@@ -1,0 +1,136 @@
+//-------------------------從這裡開始是 璇   的OOOOOOOOOOOOO-----------------------------------
+        [Authorize]
+        [HttpGet]
+        public IActionResult User_information()
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult E1_User()
+        {
+            //var editusermodel = new SqlModels.ViewModels.UserViewModels.EditUserLibraryViewModel();
+            return View();
+        }
+        public IActionResult E2_UserPhoto()
+        {
+            return View();
+        }
+        public IActionResult E3_UserTopic()
+        {
+            return View();
+        }
+
+        public IActionResult E4_UserPrivacy()
+        {
+            //var privacymodel = new PrivacieLibraryViewModel();
+            return View();
+        }
+        #region
+        //public async Task<IActionResult> E4_UserPrivacyList()
+        //{
+        //    var model = await _context.UserPrivacies.ToListAsync();
+        //    return View(model);
+        //}
+        #endregion
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Post_E1_User([FromBody]E1OutputUserDTO model)
+        {
+            //抓登入使用者的id
+            UserModel LoginUser = await _userManager.GetUserAsync(HttpContext.User);
+            string userId = LoginUser.Id;
+            TempData["actiontype"] = "useredit";
+            if (model == null)
+            {
+                var def = new E1OutputUserDTO();
+                def.message = "設定失敗，請檢查是否有選項未填寫";
+                return Json(def);
+            }
+            else
+            {
+                //個人檔案名稱
+                var username = model.UserName;
+                //密碼
+                //確認密碼
+                //國家/地區
+                var countryID = model.UserCountryId;
+                //關於我
+                var UserAbout = model.UserAbout;
+
+                var result = _service.E1EditList(userId, username, countryID, UserAbout);
+                return Ok(result);
+
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Post_E4_UserPrivacy([FromBody]OutputUserDTO model)
+        {
+            //抓登入使用者的id
+            //var userId = GetUserId();
+            //string userId = "4c01f614-06bf-4fd6-897a-a62a0af4b64c";
+            UserModel LoginUser = await _userManager.GetUserAsync(HttpContext.User);
+            string userId = LoginUser.Id;
+            TempData["actiontype"] = "privacy";
+            //model.UserPriPersonal == null || model.UserFriendList == null || model.Userprygame == null
+            if (model == null)
+            {
+                var def = new OutputUserDTO();
+                def.message = "隱私設定失敗，請選擇隱私選項";
+                return Json(def);
+            }
+            else
+            {
+                var person = model.UserPriPersonal;
+                var game = model.Userprygame;
+                var list = model.UserFriendList;
+
+                var result = _service.PrivacyList(userId, person, game, list);
+                return Ok(result);
+
+            }
+            #region
+            ////遊戲資料隱私
+            //var result1 = _service.prypersonalFile(userId, id);
+            ////遊戲資料隱私
+            //var result2 = _service.prygameFile(userId, id);
+            ////好友隱私設定
+            //var result = _service.test(userId , id);
+
+
+            //if (ModelState.IsValid)
+            //{
+            //    //讀隱私代碼
+            //    string privacyCode = privacyVM.Privacie;
+            //    //由隱私代碼查詢名稱
+            //    string privacy = privacyVM.Privacies.Where(c => c.Value == privacyCode)
+            //        .Select(x => x.Text).FirstOrDefault();
+
+            //    return RedirectToAction("DisplayPrivacy", new { Privacy = privacy });
+            //}
+            #endregion
+            //下斷點
+        }
+        #region 
+        //顯示privacy資訊
+        public IActionResult DisplayPrivacy(string privacy)
+        {
+            if (string.IsNullOrEmpty(privacy))
+            {
+                return Content("必須提供privacy參數!");
+            }
+
+            ViewData["Privacy"] = privacy;
+
+            return View();
+        }
+        //public async Task<string> GetUserId()
+        //{
+        //    //UserModel user = await _manger.GetUserAsync(HttpContext.User);
+        //    //var userId = user.Id;
+        //    //return userId;
+        //}
+        #endregion
+
+
+        //-------------------------從這裡結束是 璇   的OOOOOOOOOOOOO-----------------------------------

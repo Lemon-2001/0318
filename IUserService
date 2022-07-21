@@ -1,0 +1,13 @@
+
+        //-------------------------從這裡開始是 璇   的OOOOOOOOOOOOO-----------------------------------
+        public E1OutputUserDTO E1EditList(string userId, string username, int countryID, string UserAbout);
+        public OutputUserDTO PrivacyList(string userId,int personId, int friendId, int gameId);
+
+        //我的個人檔案隱私
+        //public prypersonalInputUserDTO prypersonalFile(string userId, int status);
+        ////遊戲資料隱私
+        //public prygameInputUserDTO prygameFile(string userId, int status);
+        ////好友隱私設定
+        //public InputUserDTO test(string userId, int status);
+
+        //-------------------------從這裡結束是 璇   的OOOOOOOOOOOOO-----------------------------------

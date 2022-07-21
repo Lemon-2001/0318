@@ -56,27 +56,63 @@ let password = document.querySelector('.E1_password')
 //確認密碼
 let password_Con = document.querySelector('.E1_password_Con')
 //國家/地區
-let country = document.querySelector('.E1_country')
+let countryID = document.querySelector('.E1_country')
 //關於我
 let UserAbout = document.querySelector('.E1_UserAbout')
 
 E1_submitValue()
 function E1_submitValue() {
     //個人檔案名稱
-    UserName.addEventListener('onchange', function () {
-        var option = this.UserName
-        $(`.E1_UserName`).attr("value", `${option.value}`)
-        debugger
+    UserName.addEventListener('change', function () {
+        UserName.value
+        //debugger
     })
     //密碼
+    password.addEventListener('change', function () {
+        password.value
+        //debugger
+    })
     //確認密碼
+    password_Con.addEventListener('change', function () {
+        password_Con.value
+        //debugger
+    })
     //國家/地區
-    country.addEventListener('change', function () {
-        //var option = this.options[this.selectedIndex];
-        //$(`.E1_country`).attr("value", `${option.value}`)
-        var Str = UserName.value
-        alert(Str)
-        debugger
+    countryID.addEventListener('change', function () {
+        var option = this.options[this.selectedIndex];
+        $(`.E1_country`).attr("value", `${option.value}`)
+        //debugger
     })
     //關於我
+    UserAbout.addEventListener('change', function () {
+        UserAbout.value
+        //debugger
+    })
+}
+
+//使用者編輯
+sumbit.addEventListener("click", function () {
+    usereditFile()
+})
+
+async function usereditFile(){
+    const url = '/User/E1_User'
+    let request1 = new Request(url, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            UserName: `${UserName.value}`,
+            countryList: `${countryID.value}`,
+            UserAbout: `${UserAbout.value}`,
+        })
+    })
+    let action = await fetch(request1)
+    let data = await action.json()
+    console.log(data)
+    if (data.message == "您的設定已更改成功") {
+        Swal.fire(data.message, '', 'success')
+    }
+    else {
+        Swal.fire(data.message, '', 'error')
+    }
 }
